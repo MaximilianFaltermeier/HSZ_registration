@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import Select
 from sys import exit
+from privat_data import PERSONAL_DATA
 
 # constants for readability of program. Don't touch them!
 GECKODRIVER_EXE = r'D:\Code\Python_Programs\Sportanmeldung\geckodriver.exe'
@@ -13,18 +14,23 @@ XPATH_BOOKING_BUTTON = "//input[@type='submit'][@value='buchen']"
 # defines time in [s] how long program is willing to wait before TimeOutException is thrown
 TIMEOUT = 1800
 
-# these variables need to be adjusted for different persons/registrations
+# these variables need to be adjusted for different registrations
 HSZ_WEBPAGE = "https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi"
-PERSONAL_DATA = {
-    'forname': 'Maximilian',
-    'surname': 'Faltermeier',
-    'street': 'Rennbahn 1',
-    'city': '52062 Aachen',
-    'matriculation_number': '380274',
-    'phone_number': '015750950080',
-    'email': 'maximilian.ernst.faltermeier@rwth-aachen.de'
-}
 
+# the privat_data file needs to be adjusted for different users
+""" the structure of PERSONAL_DATA is the following
+
+    PERSONAL_DATA = {
+        'forname': 'Max',
+        'surname': 'Mustermann',
+        'street': 'Somestreet 1',
+        'city': '12345 City',
+        'matriculation_number': '123456',
+        'phone_number': '0157123456',
+        'email': 'myMailadress@myprovider.com'
+        }
+
+"""
 if __name__ == '__main__':
     # start webdriver and opens start page
     driver = webdriver.Firefox(executable_path=GECKODRIVER_EXE)
@@ -55,7 +61,7 @@ if __name__ == '__main__':
     city = driver.find_element_by_xpath("//input[@type='text'][@name='ort']")
     city.send_keys(PERSONAL_DATA['city'])
 
-    status = Select(driver.find_element_by_xpath("//select[@name='statusorig']")).select_by_value('S-RWTH')
+    status = Select(driver.find_element_by_xpath("//select[@name='statusorig']")).select_by_value(PERSONAL_DATA['status'])
 
     mail = driver.find_element_by_xpath("//input[@type='text'][@name='email']")
     mail.send_keys(PERSONAL_DATA['email'])
