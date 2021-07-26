@@ -1,0 +1,13 @@
+1627303704343	geckodriver	INFO	Listening on 127.0.0.1:65303
+1627303707369	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Max\\AppData\\Local\\Temp\\rust_mozprofilex3stHl"
+1627303708039	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Max\\AppData\\Local\\Temp\\rust_mozprofilex3stHl\\search.json.mozlz4", (void 0)))
+1627303711175	Marionette	INFO	Listening on port 65312
+1627303711637	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource:///actors/FormValidationChild.jsm, line 177: TypeError: this._element is null
+JavaScript error: resource://gre/actors/AutoCompleteChild.jsm, line 125: Error: Invalid autocomplete selectedIndex
+1627303712927	Marionette	INFO	Stopped listening on port 65312
+JavaScript error: resource://gre/modules/UrlClassifierListManager.jsm, line 691: TypeError: this.tablesData[table] is undefined
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
