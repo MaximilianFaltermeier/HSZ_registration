@@ -6,16 +6,17 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import Select
 from sys import exit
 from privat_data import PERSONAL_DATA
+from timeit import default_timer as timer
 
 # constants for readability of program. Don't touch them!
 GECKODRIVER_EXE = r'D:\Code\Python_Programs\Sportanmeldung\geckodriver.exe'
 XPATH_BOOKING_BUTTON = "//input[@type='submit'][@value='buchen']"
 
 # defines time in [s] how long program is willing to wait before TimeOutException is thrown
-TIMEOUT = 1800
-
+TIMEOUT_LOADING_PAGE = 5
+TIMEOUT_WAIT_FOR_BUTTON_TO_BE_CLICKABLE = 1800
 # these variables need to be adjusted for different registrations
-HSZ_WEBPAGE = "https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi"
+HSZ_WEBPAGE = "https://buchung.hsz.rwth-aachen.de/angebote/aktueller_zeitraum/_Lernraumbuchung.html"
 
 # the privat_data file needs to be adjusted for different users
 """ the structure of PERSONAL_DATA is the following
@@ -31,22 +32,38 @@ HSZ_WEBPAGE = "https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi"
         }
 
 """
+
+
+def refresh_until_button_is_clicked(button_xpath):
+    start = timer()
+    while True:
+        end = timer()
+        if end-start > TIMEOUT_WAIT_FOR_BUTTON_TO_BE_CLICKABLE:
+            exit('Timeout: button is not clickable after ' + str(TIMEOUT_WAIT_FOR_BUTTON_TO_BE_CLICKABLE) + ' s')
+
+        try:
+            element = WebDriverWait(driver, TIMEOUT_LOADING_PAGE).until(
+                EC.presence_of_element_located((By.XPATH, button_xpath))
+            )
+            element.click()
+            return True
+
+        except TimeoutException:
+            driver.refresh()
+
+
 if __name__ == '__main__':
     # start webdriver and opens start page
     driver = webdriver.Firefox(executable_path=GECKODRIVER_EXE)
     driver.get(HSZ_WEBPAGE)
     # waits until booking is possible
-    try:
-        element = WebDriverWait(driver, TIMEOUT).until(
-            EC.presence_of_element_located((By.XPATH, XPATH_BOOKING_BUTTON))
-        )
-        element.click()
-    except TimeoutException:
-        driver.quit()
-        exit('timeout')
+    refresh_until_button_is_clicked(XPATH_BOOKING_BUTTON)
+    refresh_until_button_is_clicked(XPATH_BOOKING_BUTTON)
 
-    # registration
-    sex = driver.find_element_by_xpath("//input[@type='radio'][@value='M']")
+    # registration starts as soon as elements on page are available
+    sex = WebDriverWait(driver, TIMEOUT_LOADING_PAGE).until(
+                EC.presence_of_element_located((By.XPATH, "//input[@type='radio'][@value='M']"))
+    )
     sex.click()
 
     forename = driver.find_element_by_xpath("//input[@type='text'][@name='vorname']")
@@ -77,5 +94,5 @@ if __name__ == '__main__':
     data_protection.click()
 
     # goto next page
-    continue_with_booking = driver.find_element_by_xpath("//input[@type='submit'][@title='continue booking']")
+    # continue_with_booking = driver.find_element_by_xpath("//input[@type='submit'][@title='continue booking']")
 
