@@ -7,11 +7,12 @@ from selenium.webdriver.support.ui import Select
 from sys import exit
 from privat_data import PERSONAL_DATA
 from timeit import default_timer as timer
+from time import sleep
 
 # constants for readability of program. Don't touch them!
 GECKODRIVER_EXE = r'D:\Code\Python_Programs\Sportanmeldung\geckodriver.exe'
 XPATH_BOOKING_BUTTON = "//input[@type='submit'][@value='buchen']"
-
+COURSE = "[@name='BS_Kursid_178673']"
 # defines time in [s] how long program is willing to wait before TimeOutException is thrown
 TIMEOUT_LOADING_PAGE = 5
 TIMEOUT_WAIT_FOR_BUTTON_TO_BE_CLICKABLE = 1800
@@ -24,7 +25,7 @@ HSZ_WEBPAGE = "https://buchung.hsz.rwth-aachen.de/angebote/aktueller_zeitraum/_L
     PERSONAL_DATA = {
         'forname': 'Max',
         'surname': 'Mustermann',
-        'street': 'Somestreet 1',
+        'street': 'some_street 1',
         'city': '12345 City',
         'matriculation_number': '123456',
         'phone_number': '0157123456',
@@ -57,7 +58,8 @@ if __name__ == '__main__':
     driver = webdriver.Firefox(executable_path=GECKODRIVER_EXE)
     driver.get(HSZ_WEBPAGE)
     # waits until booking is possible
-    refresh_until_button_is_clicked(XPATH_BOOKING_BUTTON)
+    refresh_until_button_is_clicked(XPATH_BOOKING_BUTTON+COURSE)
+    driver.switch_to.window(driver.window_handles[-1])
     refresh_until_button_is_clicked(XPATH_BOOKING_BUTTON)
 
     # registration starts as soon as elements on page are available
@@ -94,5 +96,6 @@ if __name__ == '__main__':
     data_protection.click()
 
     # goto next page
-    # continue_with_booking = driver.find_element_by_xpath("//input[@type='submit'][@title='continue booking']")
-
+    sleep(5)
+    continue_with_booking = driver.find_element_by_xpath("/html/body/form/div/div[3]/div[3]/div[2]/input").click()
+    # TODO: send confirmation as message to phone
