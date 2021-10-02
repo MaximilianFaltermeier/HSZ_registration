@@ -11,15 +11,16 @@ from time import sleep
 import pdfcrowd
 from telegram_bot import telegram_bot_senddocument
 
-# constants for readability of program. Don't touch them!
-GECKODRIVER_EXE = r'D:\Code\Python_Programs\Sportanmeldung\geckodriver.exe'
+# adjust these parameters !!!
 XPATH_BOOKING_BUTTON = "//input[@type='submit'][@value='buchen']"
 COURSE = "[@name='BS_Kursid_178673']"
+HSZ_WEBPAGE = "https://buchung.hsz.rwth-aachen.de/angebote/aktueller_zeitraum/_Lernraumbuchung.html"
+# ------------------------------------------------------------------------------------------
 # defines time in [s] how long program is willing to wait before TimeOutException is thrown
 TIMEOUT_LOADING_PAGE = 5
 TIMEOUT_WAIT_FOR_BUTTON_TO_BE_CLICKABLE = 1800
-# these variables need to be adjusted for different registrations
-HSZ_WEBPAGE = "https://buchung.hsz.rwth-aachen.de/angebote/aktueller_zeitraum/_Lernraumbuchung.html"
+# constants for readability of program. Don't touch them!
+GECKODRIVER_EXE = r'D:\Code\Python_Programs\Sportanmeldung\geckodriver.exe'
 
 # the privat_data file needs to be adjusted for different users
 """ the structure of PERSONAL_DATA is the following
