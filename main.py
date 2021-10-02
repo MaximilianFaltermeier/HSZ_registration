@@ -5,9 +5,11 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import Select
 from sys import exit
-from privat_data import PERSONAL_DATA
+from privat_data import PERSONAL_DATA, CONVERTER_API_KEY, CONVERTER_USER_NAME
 from timeit import default_timer as timer
 from time import sleep
+import pdfcrowd
+from telegram_bot import telegram_bot_senddocument
 
 # constants for readability of program. Don't touch them!
 GECKODRIVER_EXE = r'D:\Code\Python_Programs\Sportanmeldung\geckodriver.exe'
@@ -97,5 +99,12 @@ if __name__ == '__main__':
 
     # goto next page
     sleep(5)
-    continue_with_booking = driver.find_element_by_xpath("/html/body/form/div/div[3]/div[3]/div[2]/input").click()
-    # TODO: send confirmation as message to phone
+    driver.find_element_by_xpath("/html/body/form/div/div[3]/div[3]/div[2]/input").click()
+    sleep(5)
+    driver.find_element_by_xpath("/html/body/form/div/div[3]/div[1]/div[2]/input").click()
+
+    # sends confirmation as an pdf to telegram chat bot
+    page_html = driver.page_source
+    converter = pdfcrowd.HtmlToPdfClient(CONVERTER_USER_NAME, CONVERTER_API_KEY)
+    confirmation_pdf = converter.convertString(page_html)
+    telegram_bot_senddocument(confirmation_pdf)
