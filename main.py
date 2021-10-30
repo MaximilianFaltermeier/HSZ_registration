@@ -4,14 +4,15 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import Select
-from sys import exit
-from privat_data import PERSONAL_DATA
+import pause
+from datetime import datetime
 from timeit import default_timer as timer
 from time import sleep
 import pdfkit
 from telegram_bot import telegram_bot_senddocument
-import pause
-from datetime import datetime
+from sys import exit
+from privat_data import PERSONAL_DATA
+
 
 # adjust these parameters !!!
 SPORTSPIELE = 0
